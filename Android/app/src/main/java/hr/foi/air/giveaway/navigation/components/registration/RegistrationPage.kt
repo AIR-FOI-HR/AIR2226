@@ -20,37 +20,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hr.foi.air.giveaway.entities.RegistrationBody
+import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.foi.air.giveaway.ui.components.*
+import hr.foi.air.giveaway.viewmodels.RegistrationViewModel
+import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
 fun RegistrationPage(
+    viewModel: RegistrationViewModel = viewModel(),
     onSuccessfulRegistration: (newUsername: String) -> Unit
 ) {
-    var firstName by remember {
-        mutableStateOf("")
-    }
-    var lastName by remember {
-        mutableStateOf("")
-    }
-    var username by remember {
-        mutableStateOf("")
-    }
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
-    var confirmPassword by remember {
-        mutableStateOf("")
-    }
+    val firstName = viewModel.firstName.observeAsState().value ?: ""
+    val lastName = viewModel.lastName.observeAsState().value ?: ""
+    val username = viewModel.username.observeAsState().value ?: ""
+    val email = viewModel.email.observeAsState().value ?: ""
+    val password = viewModel.password.observeAsState().value ?: ""
+    val confirmPassword = viewModel.confirmPassword.observeAsState().value ?: ""
     var isAwaitingResponse by remember {
         mutableStateOf(false)
     }
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
+    val errorMessage = viewModel.errorMessage.observeAsState().value ?: ""
 
     Column(
         modifier = Modifier
@@ -74,32 +63,32 @@ fun RegistrationPage(
         StyledTextField(
             label = "First name",
             value = firstName,
-            onValueChange = { firstName = it })
+            onValueChange = {  viewModel.firstName.value = it  })
 
         StyledTextField(
             label = "Last name",
             value = lastName,
-            onValueChange = { lastName = it })
+            onValueChange = {  viewModel.lastName.value = it  })
 
         StyledTextField(
             label = "Username",
             value = username,
-            onValueChange = { username = it })
+            onValueChange = { viewModel.username.value = it })
 
         StyledTextField(
             label = "Email",
             value = email,
-            onValueChange = { email = it })
+            onValueChange = { viewModel.email.value = it })
 
         PasswordTextField(
             label = "Password",
             value = password,
-            onValueChange = { password = it })
+            onValueChange = { viewModel.password.value = it })
 
         PasswordTextField(
             label = "Confirm password",
             value = confirmPassword,
-            onValueChange = { confirmPassword = it },
+            onValueChange = { viewModel.confirmPassword.value = it },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
 
@@ -109,9 +98,17 @@ fun RegistrationPage(
             label = "Register",
             enabled = !isAwaitingResponse,
             onClick = {
-                val requestBody = RegistrationBody(firstName, lastName, username, email, password, "kupac")
-                onSuccessfulRegistration(username)
-                isAwaitingResponse = false
+                isAwaitingResponse = true
+
+                viewModel.registerUser(
+                    onSuccess = {
+                        isAwaitingResponse = false
+                        onSuccessfulRegistration(username)
+                    },
+                    onFail = {
+                        isAwaitingResponse = false
+                    }
+                )
             }
         )
     }
@@ -120,5 +117,5 @@ fun RegistrationPage(
 @Preview
 @Composable
 fun RegistrationPagePreview() {
-    RegistrationPage({})
+    RegistrationPage(onSuccessfulRegistration = {})
 }

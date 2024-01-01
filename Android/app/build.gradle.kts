@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "hr.foi.air.giveaway"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -69,4 +69,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.2.0")
     implementation("com.squareup.retrofit2:retrofit:2.2.0")
     implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.2")
 }
