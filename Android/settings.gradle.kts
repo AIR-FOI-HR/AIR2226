@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "GiveAway"
 include(":app")
 include(":core")
+include(":standard_auth_login")
