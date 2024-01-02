@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GiveAway"
 include(":app")
- 
+include(":core")
