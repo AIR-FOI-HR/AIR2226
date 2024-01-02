@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hr.foi.air.giveaway.navigation.components.EntryPage
+import hr.foi.air.giveaway.navigation.components.HomePage
 import hr.foi.air.giveaway.navigation.components.login.LoginPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
 import hr.foi.air.giveaway.navigation.components.registration.RegistrationPage
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginPage(
                                 onSuccessfulLogin = {
-                                    navController.navigate("entry")
+                                    navController.navigate("home")
                                 }
                             )
                         }
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                                     repeat(2) { navController.popBackStack() }
                                 }
                             )
+                        }
+                        composable("home") {
+                            HomePage()
                         }
                     }
                 }
