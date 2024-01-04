@@ -1,4 +1,4 @@
-package hr.foi.air.giveaway.entities
+package hr.foi.air.entities
 
 object MockDataLoader {
     const val SUCCESS = 0

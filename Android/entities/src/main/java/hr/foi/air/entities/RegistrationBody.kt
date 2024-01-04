@@ -1,4 +1,4 @@
-package hr.foi.air.giveaway.entities
+package hr.foi.air.entities
 
 data class RegistrationBody(
     val first_name: String,

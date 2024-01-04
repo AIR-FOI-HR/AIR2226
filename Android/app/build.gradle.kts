@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":entities"))
     implementation(project(":standard_auth_login"))
     implementation(project(":core"))
     implementation("androidx.core:core-ktx:1.9.0")

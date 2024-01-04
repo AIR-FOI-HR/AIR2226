@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "hr.foi.air.standard_auth_login"
+    namespace = "hr.foi.air.giveaway"
     compileSdk = 34
 
     defaultConfig {
@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":entities"))
     implementation(project(":core"))
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

@@ -12,8 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.core.login.LoginHandler
 import hr.foi.air.core.login.LoginOutcomeListener
-import hr.foi.air.giveaway.entities.MockDataLoader
-import hr.foi.air.giveaway.entities.RegistrationBody
 import hr.foi.air.giveaway.ui.components.PasswordTextField
 import hr.foi.air.giveaway.ui.components.StyledButton
 import hr.foi.air.giveaway.ui.components.StyledTextField
@@ -70,13 +68,6 @@ fun LoginPage (
         StyledButton(
             label = "Login",
             onClick = {
-                /*val registrationUser: RegistrationBody? = MockDataLoader.getDataByUsername(username)
-
-                if (registrationUser != null && username == registrationUser.username && password == registrationUser.password) {
-                    onSuccessfulLogin()
-                } else {
-                    errorMessage = "Wrong mock credentials entered!"
-                }*/
                 val standardAuthLoginToken = StandardAuthLoginToken(username, password)
 
                 loginHandler.handleLogin(standardAuthLoginToken, object : LoginOutcomeListener {

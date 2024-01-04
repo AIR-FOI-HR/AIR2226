@@ -3,8 +3,8 @@ package hr.foi.air.giveaway.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import hr.foi.air.giveaway.entities.MockDataLoader
-import hr.foi.air.giveaway.entities.RegistrationBody
+import hr.foi.air.entities.MockDataLoader
+import hr.foi.air.entities.RegistrationBody
 
 class RegistrationViewModel : ViewModel() {
     val firstName: MutableLiveData<String> = MutableLiveData("")
