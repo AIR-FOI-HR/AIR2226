@@ -10,14 +10,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import hr.foi.air.core.login.LoginHandler
+import hr.foi.air.core.login.LoginOutcomeListener
 import hr.foi.air.giveaway.entities.MockDataLoader
 import hr.foi.air.giveaway.entities.RegistrationBody
 import hr.foi.air.giveaway.ui.components.PasswordTextField
 import hr.foi.air.giveaway.ui.components.StyledButton
 import hr.foi.air.giveaway.ui.components.StyledTextField
+import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
+import hr.foi.air.standard_auth_login.StandardAuthLoginToken
+
 @Composable
 fun LoginPage (
-    onSuccessfulLogin: () -> Unit
+    onSuccessfulLogin: () -> Unit,
+    loginHandler: LoginHandler
 ) {
     var username by remember {
         mutableStateOf("")
@@ -64,13 +70,23 @@ fun LoginPage (
         StyledButton(
             label = "Login",
             onClick = {
-                val registrationUser: RegistrationBody? = MockDataLoader.getDataByUsername(username)
+                /*val registrationUser: RegistrationBody? = MockDataLoader.getDataByUsername(username)
 
                 if (registrationUser != null && username == registrationUser.username && password == registrationUser.password) {
                     onSuccessfulLogin()
                 } else {
                     errorMessage = "Wrong mock credentials entered!"
-                }
+                }*/
+                val standardAuthLoginToken = StandardAuthLoginToken(username, password)
+
+                loginHandler.handleLogin(standardAuthLoginToken, object : LoginOutcomeListener {
+                    override fun onSuccessfulLogin(username: String) {
+                        onSuccessfulLogin()
+                    }
+                    override fun onFailedLogin(reason: String) {
+                        errorMessage = reason
+                    }
+                })
             }
         )
     }
@@ -79,5 +95,5 @@ fun LoginPage (
 @Preview
 @Composable
 fun LoginPagePreview() {
-    LoginPage({})
+    LoginPage({}, StandardAuthLoginHandler())
 }
