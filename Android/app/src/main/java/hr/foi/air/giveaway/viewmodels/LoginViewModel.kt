@@ -8,7 +8,7 @@ import hr.foi.air.core.login.LoginOutcomeListener
 import hr.foi.air.core.login.LoginToken
 
 class LoginViewModel : ViewModel() {
-    val username: MutableLiveData<String> = MutableLiveData("")
+    val identifier: MutableLiveData<String> = MutableLiveData("")
     val password: MutableLiveData<String> = MutableLiveData("")
     private val _errorMessage: MutableLiveData<String> = MutableLiveData("")
     val errorMessage: LiveData<String> = _errorMessage
@@ -20,7 +20,7 @@ class LoginViewModel : ViewModel() {
         onFailedLogin: () -> Unit
     ) {
         loginHandler.handleLogin(loginToken, object : LoginOutcomeListener {
-            override fun onSuccessfulLogin(username: String) {
+            override fun onSuccessfulLogin(identifier: String) {
                 onSuccessfulLogin()
             }
 

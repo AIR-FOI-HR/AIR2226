@@ -1,13 +1,15 @@
-package hr.foi.air.google_login
+package hr.foi.air.mail_login
 
 import hr.foi.air.core.login.LoginHandler
 import hr.foi.air.core.login.LoginOutcomeListener
 import hr.foi.air.core.login.LoginToken
+import hr.foi.air.entities.MockDataLoader
+import hr.foi.air.entities.RegistrationBody
 import java.lang.IllegalArgumentException
 
-class GoogleLoginHandler : LoginHandler {
+class MailLoginHandler : LoginHandler {
     override fun handleLogin(loginToken: LoginToken, loginListener: LoginOutcomeListener) {
-        if(loginToken !is GoogleLoginToken) {
+        if(loginToken !is MailLoginToken) {
             throw IllegalArgumentException("Must receive GoogleLoginToken instance for 'loginToken'!")
         }
 
@@ -15,10 +17,13 @@ class GoogleLoginHandler : LoginHandler {
         val email = authorizers["email"]!!
         val password = authorizers["password"]!!
 
-        if(email == "nikolabiskup101@gmail.com" && password == "12345678"){
-            loginListener.onSuccessfulLogin("Nikola")
+
+        val registrationUser: RegistrationBody? = MockDataLoader.getDataByEmail(email)
+
+        if (registrationUser != null && email == registrationUser.email && password == registrationUser.password) {
+            loginListener.onSuccessfulLogin(registrationUser.username)
         } else {
-            loginListener.onFailedLogin("Wrong mock credentials entered!")
+            loginListener.onFailedLogin("Wrong login for email!")
         }
 
     }

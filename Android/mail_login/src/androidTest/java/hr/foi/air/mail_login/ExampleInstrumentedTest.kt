@@ -1,4 +1,4 @@
-package hr.foi.air.google_login
+package hr.foi.air.mail_login
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

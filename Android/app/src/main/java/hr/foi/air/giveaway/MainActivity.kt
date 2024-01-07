@@ -18,12 +18,11 @@ import hr.foi.air.giveaway.navigation.components.login.LoginPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
 import hr.foi.air.giveaway.navigation.components.registration.RegistrationPage
 import hr.foi.air.giveaway.ui.theme.AppTheme
-import hr.foi.air.google_login.GoogleLoginHandler
+import hr.foi.air.mail_login.MailLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
 
 class MainActivity : ComponentActivity() {
-    private val loginHandlers = listOf(StandardAuthLoginHandler(), GoogleLoginHandler())
-    private val currentLoginHandler = loginHandlers[1]
+    private val loginHandlers = listOf(StandardAuthLoginHandler(), MailLoginHandler())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,7 +48,9 @@ class MainActivity : ComponentActivity() {
                                 onSuccessfulLogin = {
                                     navController.navigate("home")
                                 },
-                                loginHandler = currentLoginHandler
+                                onFailedLogin = {
+                                },
+                                loginHandlers = loginHandlers
                             )
                         }
                         composable("register") {

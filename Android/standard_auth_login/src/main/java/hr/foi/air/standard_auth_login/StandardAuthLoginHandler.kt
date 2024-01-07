@@ -23,7 +23,7 @@ class StandardAuthLoginHandler : LoginHandler{
         if (registrationUser != null && username == registrationUser.username && password == registrationUser.password) {
             loginListener.onSuccessfulLogin(username)
         } else {
-            loginListener.onFailedLogin("Wrong mock credentials entered!")
+            loginListener.onFailedLogin("Wrong login for username!")
         }
     }
 }

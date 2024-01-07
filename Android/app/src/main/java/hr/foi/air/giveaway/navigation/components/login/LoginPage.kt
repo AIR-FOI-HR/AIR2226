@@ -17,27 +17,31 @@ import hr.foi.air.giveaway.ui.components.PasswordTextField
 import hr.foi.air.giveaway.ui.components.StyledButton
 import hr.foi.air.giveaway.ui.components.StyledTextField
 import hr.foi.air.giveaway.viewmodels.LoginViewModel
+import hr.foi.air.mail_login.MailLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginToken
-import hr.foi.air.google_login.GoogleLoginHandler
-import hr.foi.air.google_login.GoogleLoginToken
+import hr.foi.air.mail_login.MailLoginToken
 
 @Composable
 fun LoginPage (
     viewModel: LoginViewModel = viewModel(),
     onSuccessfulLogin: () -> Unit,
-    loginHandler: LoginHandler
+    onFailedLogin: () -> Unit,
+    loginHandlers: List<LoginHandler>
 ) {
-    val username = viewModel.username.observeAsState().value ?: ""
+    val identifier = viewModel.identifier.observeAsState().value ?: ""
     val password = viewModel.password.observeAsState().value ?: ""
 
     var awaitingResponse by remember { mutableStateOf(false) }
     val errorMessage = viewModel.errorMessage.observeAsState().value ?: ""
 
+    var handler by remember { mutableStateOf(0) }
+    val currentLoginHandler = loginHandlers[handler]
+
     Column(
         modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
 
@@ -57,9 +61,9 @@ fun LoginPage (
         Spacer(modifier = Modifier.height(50.dp))
 
         StyledTextField(
-            label = "Username",
-            value = username,
-            onValueChange = { viewModel.username.value = it })
+            label = "Identifier",
+            value = identifier,
+            onValueChange = { viewModel.identifier.value = it })
         PasswordTextField(
             label = "Password",
             value = password,
@@ -73,19 +77,27 @@ fun LoginPage (
             label = "Login",
             enabled = !awaitingResponse,
             onClick = {
-                val standardAuthLoginToken = StandardAuthLoginToken(username, password)
-                val googleLoginToken = GoogleLoginToken(username, password)
+                val currentLoginToken = when(handler) {
+                    0 -> StandardAuthLoginToken(identifier, password)
+                    1 -> MailLoginToken(identifier, password)
+                    else -> StandardAuthLoginToken(identifier, password)
+                }
 
                 awaitingResponse = true
                 viewModel.login(
-                    loginHandler,
-                    googleLoginToken,
+                    currentLoginHandler,
+                    currentLoginToken,
                     onSuccessfulLogin = {
                         awaitingResponse = false
                         onSuccessfulLogin()
                     },
                     onFailedLogin = {
+                        handler++
+                        if(handler >= loginHandlers.size) {
+                            handler = 0
+                        }
                         awaitingResponse = false
+                        onFailedLogin()
                     }
                 )
             }
@@ -98,6 +110,7 @@ fun LoginPage (
 fun LoginPagePreview() {
     LoginPage(
         onSuccessfulLogin = {},
-        loginHandler = GoogleLoginHandler()
+        onFailedLogin = {},
+        loginHandlers = listOf(StandardAuthLoginHandler(), MailLoginHandler())
     )
 }
