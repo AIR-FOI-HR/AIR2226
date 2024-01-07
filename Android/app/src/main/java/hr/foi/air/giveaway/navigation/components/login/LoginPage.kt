@@ -38,6 +38,18 @@ fun LoginPage (
     var handler by remember { mutableStateOf(0) }
     val currentLoginHandler = loginHandlers[handler]
 
+    val newLabel = when(handler) {
+        0 -> "username"
+        1 -> "mail"
+        else ->"error"
+    }
+
+    val newText = when(handler) {
+        0 -> "Login with username and password"
+        1 -> "Login with email and password"
+        else -> "Error"
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,7 +59,7 @@ fun LoginPage (
 
         if (errorMessage == "") {
             Text(
-                "Login"
+                newText
             )
         } else {
             Text(
@@ -61,7 +73,7 @@ fun LoginPage (
         Spacer(modifier = Modifier.height(50.dp))
 
         StyledTextField(
-            label = "Identifier",
+            label = newLabel,
             value = identifier,
             onValueChange = { viewModel.identifier.value = it })
         PasswordTextField(
