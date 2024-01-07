@@ -1,5 +1,6 @@
 package hr.foi.air.giveaway.navigation.components.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
@@ -17,6 +18,8 @@ import hr.foi.air.giveaway.ui.components.StyledButton
 import hr.foi.air.giveaway.ui.components.StyledTextField
 import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginToken
+import hr.foi.air.google_login.GoogleLoginHandler
+import hr.foi.air.google_login.GoogleLoginToken
 
 @Composable
 fun LoginPage (
@@ -69,8 +72,9 @@ fun LoginPage (
             label = "Login",
             onClick = {
                 val standardAuthLoginToken = StandardAuthLoginToken(username, password)
+                val googleLoginToken = GoogleLoginToken(username, password)
 
-                loginHandler.handleLogin(standardAuthLoginToken, object : LoginOutcomeListener {
+                loginHandler.handleLogin(googleLoginToken, object : LoginOutcomeListener {
                     override fun onSuccessfulLogin(username: String) {
                         onSuccessfulLogin()
                     }
@@ -86,5 +90,5 @@ fun LoginPage (
 @Preview
 @Composable
 fun LoginPagePreview() {
-    LoginPage({}, StandardAuthLoginHandler())
+    LoginPage({}, GoogleLoginHandler())
 }

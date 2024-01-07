@@ -11,7 +11,7 @@ import hr.foi.air.entities.MockDataLoader
 class StandardAuthLoginHandler : LoginHandler{
     override fun handleLogin(loginToken: LoginToken, loginListener: LoginOutcomeListener) {
         if(loginToken !is StandardAuthLoginToken) {
-            throw IllegalArgumentException("Must receive UsernamePasswordLoginToken instance for 'loginToken'!")
+            throw IllegalArgumentException("Must receive StandardAuthLoginHandler instance for 'loginToken'!")
         }
 
         val authorizers = loginToken.getAuthorizers()

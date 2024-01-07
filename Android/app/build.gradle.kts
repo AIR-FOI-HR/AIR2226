@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":google_login"))
     implementation(project(":entities"))
     implementation(project(":standard_auth_login"))
     implementation(project(":core"))
