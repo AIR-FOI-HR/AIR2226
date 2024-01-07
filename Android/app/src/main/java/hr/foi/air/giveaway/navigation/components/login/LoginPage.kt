@@ -1,21 +1,22 @@
 package hr.foi.air.giveaway.navigation.components.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.foi.air.core.login.LoginHandler
-import hr.foi.air.core.login.LoginOutcomeListener
 import hr.foi.air.giveaway.ui.components.PasswordTextField
 import hr.foi.air.giveaway.ui.components.StyledButton
 import hr.foi.air.giveaway.ui.components.StyledTextField
+import hr.foi.air.giveaway.viewmodels.LoginViewModel
 import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginToken
 import hr.foi.air.google_login.GoogleLoginHandler
@@ -23,19 +24,16 @@ import hr.foi.air.google_login.GoogleLoginToken
 
 @Composable
 fun LoginPage (
+    viewModel: LoginViewModel = viewModel(),
     onSuccessfulLogin: () -> Unit,
     loginHandler: LoginHandler
 ) {
-    var username by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+    val username = viewModel.username.observeAsState().value ?: ""
+    val password = viewModel.password.observeAsState().value ?: ""
 
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
+    var awaitingResponse by remember { mutableStateOf(false) }
+    val errorMessage = viewModel.errorMessage.observeAsState().value ?: ""
+
     Column(
         modifier = Modifier
         .fillMaxSize()
@@ -58,11 +56,14 @@ fun LoginPage (
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        StyledTextField(label = "Username", value = username, onValueChange = { username = it })
+        StyledTextField(
+            label = "Username",
+            value = username,
+            onValueChange = { viewModel.username.value = it })
         PasswordTextField(
             label = "Password",
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { viewModel.password.value = it },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
 
@@ -70,18 +71,23 @@ fun LoginPage (
 
         StyledButton(
             label = "Login",
+            enabled = !awaitingResponse,
             onClick = {
                 val standardAuthLoginToken = StandardAuthLoginToken(username, password)
                 val googleLoginToken = GoogleLoginToken(username, password)
 
-                loginHandler.handleLogin(googleLoginToken, object : LoginOutcomeListener {
-                    override fun onSuccessfulLogin(username: String) {
+                awaitingResponse = true
+                viewModel.login(
+                    loginHandler,
+                    googleLoginToken,
+                    onSuccessfulLogin = {
+                        awaitingResponse = false
                         onSuccessfulLogin()
+                    },
+                    onFailedLogin = {
+                        awaitingResponse = false
                     }
-                    override fun onFailedLogin(reason: String) {
-                        errorMessage = reason
-                    }
-                })
+                )
             }
         )
     }
@@ -90,5 +96,8 @@ fun LoginPage (
 @Preview
 @Composable
 fun LoginPagePreview() {
-    LoginPage({}, GoogleLoginHandler())
+    LoginPage(
+        onSuccessfulLogin = {},
+        loginHandler = GoogleLoginHandler()
+    )
 }
