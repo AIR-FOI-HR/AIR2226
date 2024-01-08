@@ -5,5 +5,6 @@ data class RegistrationBody(
     val last_name: String,
     val username: String,
     val email: String,
+    val number: String,
     val password: String,
 )

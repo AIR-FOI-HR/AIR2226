@@ -11,6 +11,7 @@ class RegistrationViewModel : ViewModel() {
     val lastName: MutableLiveData<String> = MutableLiveData("")
     val username: MutableLiveData<String> = MutableLiveData("")
     val email: MutableLiveData<String> = MutableLiveData("")
+    val number: MutableLiveData<String> = MutableLiveData("")
     val password: MutableLiveData<String> = MutableLiveData("")
     val confirmPassword: MutableLiveData<String> = MutableLiveData("")
 
@@ -28,6 +29,7 @@ class RegistrationViewModel : ViewModel() {
             lastName.value!!,
             username.value!!,
             email.value!!,
+            number.value!!,
             password.value!!
         )
 
@@ -44,6 +46,7 @@ class RegistrationViewModel : ViewModel() {
                 MockDataLoader.PASSWORD_INVALID -> "Password is invalid. Make sure it has at least 8 characters with at least 1 number."
                 MockDataLoader.FIRST_NAME_INVALID -> "First name is invalid!"
                 MockDataLoader.LAST_NAME_INVALID -> "Last name is invalid!"
+                MockDataLoader.PHONE_NUMBER_INVALID -> "Phone number is invalid"
                 else -> ""
             }
             _errorMessage.value += errorMessage

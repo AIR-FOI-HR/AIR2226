@@ -41,13 +41,13 @@ fun LoginPage (
     val newLabel = when(handler) {
         0 -> "username"
         1 -> "mail"
-        else ->"error"
+        else ->"identifier"
     }
 
     val newText = when(handler) {
         0 -> "Login with username and password"
         1 -> "Login with email and password"
-        else -> "Error"
+        else -> "Login with some identifier"
     }
 
     Column(

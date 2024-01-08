@@ -34,6 +34,7 @@ fun RegistrationPage(
     val lastName = viewModel.lastName.observeAsState().value ?: ""
     val username = viewModel.username.observeAsState().value ?: ""
     val email = viewModel.email.observeAsState().value ?: ""
+    val number = viewModel.number.observeAsState().value ?: ""
     val password = viewModel.password.observeAsState().value ?: ""
     val confirmPassword = viewModel.confirmPassword.observeAsState().value ?: ""
     var isAwaitingResponse by remember {
@@ -79,6 +80,11 @@ fun RegistrationPage(
             label = "Email",
             value = email,
             onValueChange = { viewModel.email.value = it })
+
+        StyledTextField(
+            label = "Phone number",
+            value = number,
+            onValueChange = { viewModel.number.value = it })
 
         PasswordTextField(
             label = "Password",
