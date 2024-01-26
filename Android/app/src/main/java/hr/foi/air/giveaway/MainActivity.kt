@@ -73,7 +73,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("home") {
                             // HomePage()
-                            // ProductsCard(DummyProducts.generateMockProducts().first())
                             ProductsPage()
                         }
                     }

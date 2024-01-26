@@ -11,7 +11,8 @@ import kotlinx.coroutines.launch
 class ProductsViewModel: ViewModel() {
     val products = mutableStateOf(listOf<Product>())
     val filteredProducts = mutableStateOf<List<Product>>(emptyList())
-    val priceFilter = mutableStateOf(0.0)
+    val minPriceFilter = mutableStateOf(0.0)
+    val maxPriceFilter = mutableStateOf(200.0)
     val selectedProductTypes = mutableStateOf(ProductType.values().toSet())
 
     init {
@@ -27,9 +28,10 @@ class ProductsViewModel: ViewModel() {
     }
 
     fun applyFilter() {
-        val filter = priceFilter.value
+        val filterMin = minPriceFilter.value
+        val filterMax = maxPriceFilter.value
         val filteredList = products.value.filter {
-            it.price >= filter && selectedProductTypes.value.contains(it.type)
+            it.price in filterMin..filterMax && selectedProductTypes.value.contains(it.type)
         }
         filteredProducts.value = filteredList
     }
