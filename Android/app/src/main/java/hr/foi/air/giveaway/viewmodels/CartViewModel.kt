@@ -7,7 +7,9 @@ import hr.foi.air.giveaway.mockdataproduct.Product
 object CartViewModel : ViewModel() {
     val cardItems = mutableStateOf(emptyList<Product>())
 
-    fun addToCart(product : Product) {
-        cardItems.value += product;
+    fun addToCart(product: Product) {
+        if (!cardItems.value.contains(product)) {
+            cardItems.value += product
+        }
     }
 }
