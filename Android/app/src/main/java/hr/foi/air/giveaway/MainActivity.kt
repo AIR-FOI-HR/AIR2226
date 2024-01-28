@@ -13,7 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hr.foi.air.giveaway.navigation.components.EntryPage
+import hr.foi.air.giveaway.navigation.components.HomePage
 import hr.foi.air.giveaway.navigation.components.login.LoginPage
+import hr.foi.air.giveaway.navigation.components.payment.CartPage
 import hr.foi.air.giveaway.navigation.components.products.ProductsPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
 import hr.foi.air.giveaway.navigation.components.registration.RegistrationPage
@@ -46,7 +48,8 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginPage(
                                 onSuccessfulLogin = {
-                                    navController.navigate("home")
+                                    // navController.navigate("home")
+                                    navController.navigate("products")
                                 },
                                 onFailedLogin = {
                                 },
@@ -72,8 +75,17 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("home") {
-                            // HomePage()
-                            ProductsPage()
+                            HomePage()
+                        }
+                        composable("products") {
+                            ProductsPage(
+                                onCartButtonClick = {
+                                    navController.navigate("cart")
+                                }
+                            )
+                        }
+                        composable("cart") {
+                            CartPage()
                         }
                     }
                 }

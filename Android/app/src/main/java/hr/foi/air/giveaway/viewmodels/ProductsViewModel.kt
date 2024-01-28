@@ -9,7 +9,7 @@ import hr.foi.air.giveaway.mockdataprodutc.ProductType
 import kotlinx.coroutines.launch
 
 class ProductsViewModel: ViewModel() {
-    val products = mutableStateOf(listOf<Product>())
+    private val products = mutableStateOf(listOf<Product>())
     val filteredProducts = mutableStateOf<List<Product>>(emptyList())
     val minPriceFilter = mutableStateOf(0.0)
     val maxPriceFilter = mutableStateOf(200.0)
