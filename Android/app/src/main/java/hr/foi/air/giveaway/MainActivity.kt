@@ -12,9 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.navigation.components.EntryPage
 import hr.foi.air.giveaway.navigation.components.HomePage
 import hr.foi.air.giveaway.navigation.components.login.LoginPage
+import hr.foi.air.giveaway.navigation.components.payment.CartPage
+import hr.foi.air.giveaway.navigation.components.products.ProductDetails
+import hr.foi.air.giveaway.navigation.components.products.ProductsPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
 import hr.foi.air.giveaway.navigation.components.registration.RegistrationPage
 import hr.foi.air.giveaway.ui.theme.AppTheme
@@ -46,7 +51,8 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginPage(
                                 onSuccessfulLogin = {
-                                    navController.navigate("home")
+                                    // navController.navigate("home")
+                                    navController.navigate("products")
                                 },
                                 onFailedLogin = {
                                 },
@@ -73,6 +79,30 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("home") {
                             HomePage()
+                        }
+                        composable("products") {
+                            ProductsPage(
+                                onProductClick = { clickedProduct ->
+                                    navController.navigate("productDetails/${clickedProduct.id}")
+                                },
+                                onCartButtonClick = {
+                                    navController.navigate("cart")
+                                }
+                            )
+                        }
+                        composable("cart") {
+                            CartPage()
+                        }
+                        composable("productDetails/{clickedProduct.id}") {backStackEntry ->
+                            val productId = backStackEntry.arguments?.getString("clickedProduct.id")?.toIntOrNull()
+                            val product: Product? = if (productId != null) {
+                                MockProducts.getProductById(productId)
+                            } else {
+                                null
+                            }
+                            if (product != null) {
+                                ProductDetails(product = product)
+                            }
                         }
                     }
                 }
