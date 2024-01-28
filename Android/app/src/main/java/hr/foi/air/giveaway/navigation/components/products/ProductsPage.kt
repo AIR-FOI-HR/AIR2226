@@ -25,6 +25,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.ProductsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import hr.foi.air.giveaway.mockdataproduct.MockProducts
 import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.mockdataproduct.ProductType
 
@@ -53,6 +55,8 @@ fun ProductsPage(
     viewModel: ProductsViewModel = viewModel()
 ) {
     var expanded  by remember { mutableStateOf(false) }
+    var isSearchBarVisible by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -83,6 +87,19 @@ fun ProductsPage(
                             contentDescription = "Shopping Cart"
                         )
                     }
+                    IconButton(
+                        onClick = {
+                            isSearchBarVisible = !isSearchBarVisible
+                            if (!isSearchBarVisible) {
+                                searchText = ""
+                            }
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Open Search"
+                        )
+                    }
                 },
                 backgroundColor = MaterialTheme.colors.primaryVariant,
                 elevation = AppBarDefaults.TopAppBarElevation
@@ -96,6 +113,39 @@ fun ProductsPage(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround,
         ) {
+            if (isSearchBarVisible) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    OutlinedTextField(
+                        value = searchText,
+                        onValueChange = {
+                            searchText = it
+                        },
+                        placeholder = { Text("Search product") }
+                    )
+                    IconButton(
+                        onClick = {
+                            val product: Product? = if (searchText != "") {
+                                MockProducts.getProductByName(searchText)
+                            } else {
+                                null
+                            }
+                            if (product != null) {
+                                onProductClick.invoke(product)
+                            }
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search product"
+                        )
+                    }
+                }
+            }
             if (!expanded) {
                 Button(
                     onClick = {

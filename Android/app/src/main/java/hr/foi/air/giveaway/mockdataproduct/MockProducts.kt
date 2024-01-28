@@ -20,4 +20,9 @@ object MockProducts {
         val productList = generateMockProducts()
         return productList.find { it.id == productId }
     }
+
+    fun getProductByName(productName: String): Product?{
+        val productList = generateMockProducts()
+        return productList.find { it.name == productName }
+    }
 }
