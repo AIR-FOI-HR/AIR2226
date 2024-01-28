@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.CartViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hr.foi.air.giveaway.mockdataprodutc.Product
+import hr.foi.air.giveaway.mockdataproduct.Product
 
 @Composable
 fun CartPage(viewModel: CartViewModel = viewModel()) {

@@ -25,8 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hr.foi.air.giveaway.mockdataprodutc.MockProducts
-import hr.foi.air.giveaway.mockdataprodutc.Product
+import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.CartViewModel
 

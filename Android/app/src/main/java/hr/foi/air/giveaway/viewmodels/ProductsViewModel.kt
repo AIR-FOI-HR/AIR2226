@@ -3,9 +3,9 @@ package hr.foi.air.giveaway.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hr.foi.air.giveaway.mockdataprodutc.MockProducts
-import hr.foi.air.giveaway.mockdataprodutc.Product
-import hr.foi.air.giveaway.mockdataprodutc.ProductType
+import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.Product
+import hr.foi.air.giveaway.mockdataproduct.ProductType
 import kotlinx.coroutines.launch
 
 class ProductsViewModel: ViewModel() {

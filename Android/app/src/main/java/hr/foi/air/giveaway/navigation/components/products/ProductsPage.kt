@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.ProductsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hr.foi.air.giveaway.mockdataprodutc.ProductType
+import hr.foi.air.giveaway.mockdataproduct.ProductType
 
 
 

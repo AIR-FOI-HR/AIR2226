@@ -1,4 +1,4 @@
-package hr.foi.air.giveaway.mockdataprodutc
+package hr.foi.air.giveaway.mockdataproduct
 
 import hr.foi.air.giveaway.R
 
