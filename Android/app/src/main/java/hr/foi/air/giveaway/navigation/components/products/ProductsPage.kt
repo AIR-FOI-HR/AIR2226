@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.ProductsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.mockdataproduct.ProductType
 
 
@@ -48,6 +49,7 @@ import hr.foi.air.giveaway.mockdataproduct.ProductType
 @Composable
 fun ProductsPage(
     onCartButtonClick: () -> Unit,
+    onProductClick: (Product) -> Unit,
     viewModel: ProductsViewModel = viewModel()
 ) {
     var expanded  by remember { mutableStateOf(false) }
@@ -186,7 +188,10 @@ fun ProductsPage(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         for (product in rowProducts) {
-                            ProductCard(product)
+                            ProductCard(
+                                { clickedProduct -> onProductClick.invoke(clickedProduct) },
+                                product
+                            )
                         }
                     }
                 }
@@ -199,6 +204,6 @@ fun ProductsPage(
 @Composable
 fun ProductsPagePreview() {
     AppTheme {
-        ProductsPage({})
+        ProductsPage({},{})
     }
 }

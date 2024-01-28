@@ -15,4 +15,9 @@ object MockProducts {
             Product(8, "Product 8", "Description 8", R.drawable.ic_launcher_foreground, 89.99, ProductType.SHOES, 6),
         )
     }
+
+    fun getProductById(productId: Int): Product?{
+        val productList = generateMockProducts()
+        return productList.find { it.id == productId }
+    }
 }
