@@ -103,7 +103,11 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         composable("cart") {
-                            CartPage()
+                            CartPage(
+                                onPurchaseClick = {
+                                    navController.navigate("payment")
+                                }
+                            )
                         }
                         composable("payment"){
                             PaymentPage()

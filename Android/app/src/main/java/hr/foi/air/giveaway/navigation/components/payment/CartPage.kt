@@ -33,9 +33,13 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun CartPage(viewModel: CartViewModel = viewModel()) {
+fun CartPage(
+    onPurchaseClick: () -> Unit,
+    viewModel: CartViewModel = viewModel()
+) {
     val removeFromCart: (Product) -> Unit = { product ->
         viewModel.removeFromCart(product)
     }
@@ -48,6 +52,8 @@ fun CartPage(viewModel: CartViewModel = viewModel()) {
         viewModel.decreaseQuantity(product)
     }
 
+    val totalCartPrice = viewModel.cardItems.value.sumByDouble { it.price * it.productQuantity }
+
     LazyColumn{
         items(viewModel.cardItems.value) {
             product -> CartItemCard(
@@ -57,6 +63,27 @@ fun CartPage(viewModel: CartViewModel = viewModel()) {
                 decreaseQuantity = decreaseQuantity
             )
         }
+        item {
+            Text(
+                text = "Total: $totalCartPrice",
+                style = MaterialTheme.typography.subtitle1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                textAlign = TextAlign.Start
+            )
+        }
+        item {
+            Button(
+                onClick = { onPurchaseClick() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant)
+            ) {
+                Text("Purchase", color = Color.White)
+            }
+        }
     }
 }
 
@@ -64,7 +91,7 @@ fun CartPage(viewModel: CartViewModel = viewModel()) {
 @Composable
 fun CartPagePreview() {
     AppTheme {
-        CartPage()
+        CartPage({})
     }
 }
 
