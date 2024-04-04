@@ -18,6 +18,7 @@ import hr.foi.air.giveaway.navigation.components.EntryPage
 import hr.foi.air.giveaway.navigation.components.HomePage
 import hr.foi.air.giveaway.navigation.components.login.LoginPage
 import hr.foi.air.giveaway.navigation.components.payment.CartPage
+import hr.foi.air.giveaway.navigation.components.payment.PaymentPage
 import hr.foi.air.giveaway.navigation.components.products.ProductDetails
 import hr.foi.air.giveaway.navigation.components.products.ProductsPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
@@ -90,9 +91,6 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable("cart") {
-                            CartPage()
-                        }
                         composable("productDetails/{clickedProduct.id}") {backStackEntry ->
                             val productId = backStackEntry.arguments?.getString("clickedProduct.id")?.toIntOrNull()
                             val product: Product? = if (productId != null) {
@@ -103,6 +101,12 @@ class MainActivity : ComponentActivity() {
                             if (product != null) {
                                 ProductDetails(product = product)
                             }
+                        }
+                        composable("cart") {
+                            CartPage()
+                        }
+                        composable("payment"){
+                            PaymentPage()
                         }
                     }
                 }
