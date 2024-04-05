@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun CartPage(
-    onPurchaseClick: () -> Unit,
+    onPurchaseClick: (Double) -> Unit,
     viewModel: CartViewModel = viewModel()
 ) {
     val removeFromCart: (Product) -> Unit = { product ->
@@ -75,7 +75,7 @@ fun CartPage(
         }
         item {
             Button(
-                onClick = { onPurchaseClick() },
+                onClick = { onPurchaseClick(totalCartPrice) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),

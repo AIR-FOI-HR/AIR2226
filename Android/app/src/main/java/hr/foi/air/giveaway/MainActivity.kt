@@ -104,13 +104,18 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("cart") {
                             CartPage(
-                                onPurchaseClick = {
-                                    navController.navigate("payment")
+                                onPurchaseClick = { totalCartPrice ->
+                                    navController.navigate("payment/$totalCartPrice")
                                 }
                             )
                         }
-                        composable("payment"){
-                            PaymentPage()
+                        composable("payment/{totalCartPrice}"){backStackEntry ->
+                            val totalCartPrice = backStackEntry.arguments?.getString("totalCartPrice")?.toDoubleOrNull() ?: 0.0
+                            PaymentPage(
+                                onReturnToStoreClick = {
+                                    navController.navigate("products")
+                                },
+                                totalCartPrice)
                         }
                     }
                 }
