@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun PaymentPage(
     onReturnToStoreClick: () -> Unit,
     totalCartPrice: Double,
+    onProceedToPayment: () -> Unit,
     viewModel: CartViewModel = viewModel()
 ) {
 
@@ -117,7 +118,7 @@ fun PaymentPage(
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Button(
-            onClick = {  },
+            onClick = {onProceedToPayment()},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -140,6 +141,6 @@ fun PaymentPage(
 @Composable
 fun PaymentPagePreview() {
     AppTheme {
-        PaymentPage({},0.00)
+        PaymentPage({},0.00, {})
     }
 }

@@ -19,6 +19,7 @@ import hr.foi.air.giveaway.navigation.components.HomePage
 import hr.foi.air.giveaway.navigation.components.login.LoginPage
 import hr.foi.air.giveaway.navigation.components.payment.CartPage
 import hr.foi.air.giveaway.navigation.components.payment.PaymentPage
+import hr.foi.air.giveaway.navigation.components.payment.PaymentProcessingPage
 import hr.foi.air.giveaway.navigation.components.products.ProductDetails
 import hr.foi.air.giveaway.navigation.components.products.ProductsPage
 import hr.foi.air.giveaway.navigation.components.registration.PostRegistration
@@ -52,8 +53,7 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginPage(
                                 onSuccessfulLogin = {
-                                    // navController.navigate("home")
-                                    navController.navigate("products")
+                                    navController.navigate("home/false")
                                 },
                                 onFailedLogin = {
                                 },
@@ -78,8 +78,16 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable("home") {
-                            HomePage()
+                        composable("home/{purchased}",
+                            arguments = listOf(navArgument("purchased") { type = NavType.BoolType })
+                        ) { backStackEntry ->
+                            val purchased = backStackEntry.arguments?.getBoolean("purchased") ?: false
+                            HomePage(
+                                purchased = purchased,
+                                onReturnToStoreClick = {
+                                    navController.navigate("products")
+                                }
+                            )
                         }
                         composable("products") {
                             ProductsPage(
@@ -115,7 +123,22 @@ class MainActivity : ComponentActivity() {
                                 onReturnToStoreClick = {
                                     navController.navigate("products")
                                 },
-                                totalCartPrice)
+                                totalCartPrice = totalCartPrice,
+                                onProceedToPayment = {
+                                    navController.navigate("paymentProcessing/$totalCartPrice")
+                                })
+                        }
+                        composable("paymentProcessing/{totalCartPrice}") { backStackEntry ->
+                            val totalCartPrice = backStackEntry.arguments?.getString("totalCartPrice")?.toDoubleOrNull() ?: 0.0
+                            PaymentProcessingPage(
+                                totalCartPrice = totalCartPrice,
+                                onPaymentSuccess = {
+                                    navController.navigate("home/true")
+                                },
+                                onCancelPayment = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                     }
                 }
