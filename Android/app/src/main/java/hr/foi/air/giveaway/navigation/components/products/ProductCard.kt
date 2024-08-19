@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.R
 import hr.foi.air.giveaway.mockdataproduct.Product
+import hr.foi.air.giveaway.mockdataproduct.ProductType
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.CartViewModel
 
@@ -87,6 +88,16 @@ fun ProductCard(
 @Composable
 fun ProductsCardPreview() {
     AppTheme {
-        ProductCard({},MockProducts.generateMockProducts().first())
+        val testProduct = Product(
+            id = 1,
+            name = "Test Product",
+            description = "This is a test product.",
+            imageRes = R.drawable.ic_launcher_foreground,
+            price = 19.99,
+            type = ProductType.TOYS,
+            productQuantity = 1
+        )
+
+        ProductCard({}, testProduct)
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,9 +43,12 @@ import androidx.compose.ui.unit.dp
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.giveaway.viewmodels.ProductsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.ProductRepository
 import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.mockdataproduct.ProductType
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 
 
 
@@ -54,6 +58,13 @@ fun ProductsPage(
     onProductClick: (Product) -> Unit,
     viewModel: ProductsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        viewModel.loadProducts(context)
+    }
+
+
     var expanded  by remember { mutableStateOf(false) }
     var isSearchBarVisible by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -129,13 +140,18 @@ fun ProductsPage(
                     )
                     IconButton(
                         onClick = {
-                            val product: Product? = if (searchText != "") {
-                                MockProducts.getProductByName(searchText)
-                            } else {
-                                null
-                            }
-                            if (product != null) {
-                                onProductClick.invoke(product)
+                            coroutineScope.launch {
+                                val product: Product? = if (searchText.isNotEmpty()) {
+                                    ProductRepository.getProductByName(
+                                        context = context,
+                                        productName = searchText
+                                    )
+                                } else {
+                                    null
+                                }
+                                if (product != null) {
+                                    onProductClick.invoke(product)
+                                }
                             }
                         },
                     ) {

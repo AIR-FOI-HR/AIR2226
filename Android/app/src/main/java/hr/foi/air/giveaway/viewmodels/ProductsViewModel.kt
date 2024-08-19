@@ -1,9 +1,10 @@
 package hr.foi.air.giveaway.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.ProductRepository
 import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.mockdataproduct.ProductType
 import kotlinx.coroutines.launch
@@ -15,13 +16,9 @@ class ProductsViewModel: ViewModel() {
     val maxPriceFilter = mutableStateOf(200.0)
     val selectedProductTypes = mutableStateOf(ProductType.values().toSet())
 
-    init {
-        loadProducts()
-    }
-
-    private fun loadProducts() {
+    fun loadProducts(context: Context) {
         viewModelScope.launch {
-            val productList = MockProducts.generateMockProducts()
+            val productList = ProductRepository.getAllProducts(context)
             products.value = productList
             applyFilter()
         }
