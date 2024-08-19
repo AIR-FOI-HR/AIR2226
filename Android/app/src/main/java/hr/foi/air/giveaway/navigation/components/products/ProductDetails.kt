@@ -2,7 +2,6 @@ package hr.foi.air.giveaway.navigation.components.products
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import hr.foi.air.giveaway.mockdataproduct.MockProducts
 import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import androidx.compose.foundation.Image
@@ -23,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import hr.foi.air.giveaway.R
+import hr.foi.air.giveaway.mockdataproduct.ProductType
 
 @Composable
 fun ProductDetails(product: Product) {
@@ -73,6 +74,16 @@ fun ProductDetails(product: Product) {
 @Composable
 fun ProductDetailsPreview() {
     AppTheme {
-        ProductDetails(MockProducts.generateMockProducts().first())
+        val testProduct = Product(
+            id = 1,
+            name = "Test Product",
+            description = "This is a test product.",
+            imageRes = R.drawable.ic_launcher_foreground,
+            price = 19.99,
+            type = ProductType.TOYS,
+            productQuantity = 1
+        )
+
+        ProductCard({}, testProduct)
     }
 }

@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import hr.foi.air.giveaway.mockdataproduct.MockProducts
+import hr.foi.air.giveaway.mockdataproduct.ProductRepository
 import hr.foi.air.giveaway.mockdataproduct.Product
 import hr.foi.air.giveaway.navigation.components.EntryPage
 import hr.foi.air.giveaway.navigation.components.HomePage
@@ -27,12 +27,23 @@ import hr.foi.air.giveaway.navigation.components.registration.RegistrationPage
 import hr.foi.air.giveaway.ui.theme.AppTheme
 import hr.foi.air.mail_login.MailLoginHandler
 import hr.foi.air.standard_auth_login.StandardAuthLoginHandler
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val loginHandlers = listOf(StandardAuthLoginHandler(), MailLoginHandler())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            ProductRepository.generateMockProducts(applicationContext)
+        }
 
         setContent {
             AppTheme {
@@ -99,14 +110,19 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable("productDetails/{clickedProduct.id}") {backStackEntry ->
+                        composable("productDetails/{clickedProduct.id}") { backStackEntry ->
                             val productId = backStackEntry.arguments?.getString("clickedProduct.id")?.toIntOrNull()
-                            val product: Product? = if (productId != null) {
-                                MockProducts.getProductById(productId)
-                            } else {
-                                null
+                            val context = LocalContext.current
+                            val productState = remember { mutableStateOf<Product?>(null) }
+
+                            LaunchedEffect(productId) {
+                                if (productId != null) {
+                                    val product = ProductRepository.getProductById(context, productId)
+                                    productState.value = product
+                                }
                             }
-                            if (product != null) {
+
+                            productState.value?.let { product ->
                                 ProductDetails(product = product)
                             }
                         }
