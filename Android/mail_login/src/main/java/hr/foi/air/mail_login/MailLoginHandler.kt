@@ -27,4 +27,10 @@ class MailLoginHandler : LoginHandler {
         }
 
     }
+
+    override fun generateLoginToken(identifier: String, password: String): LoginToken {
+        return MailLoginToken(identifier, password)
+    }
+
+    override fun getLabel(): String = "Email"
 }

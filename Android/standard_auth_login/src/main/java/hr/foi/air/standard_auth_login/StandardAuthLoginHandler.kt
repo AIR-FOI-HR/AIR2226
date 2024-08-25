@@ -26,4 +26,10 @@ class StandardAuthLoginHandler : LoginHandler{
             loginListener.onFailedLogin("Wrong login for username!")
         }
     }
+
+    override fun generateLoginToken(identifier: String, password: String): LoginToken {
+        return StandardAuthLoginToken(identifier, password)
+    }
+
+    override fun getLabel(): String = "Standard"
 }
