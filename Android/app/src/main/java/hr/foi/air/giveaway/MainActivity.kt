@@ -1,6 +1,7 @@
 package hr.foi.air.giveaway
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,14 +32,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import hr.foi.air.giveaway.auth.AuthManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val loginHandlers = listOf(StandardAuthLoginHandler(), MailLoginHandler())
+    lateinit var authManager: AuthManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        authManager = AuthManager(
+            listOf(
+                StandardAuthLoginHandler(),
+                MailLoginHandler()
+            )
+        )
+
         setContentView(R.layout.activity_main)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -67,8 +77,9 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("home/false")
                                 },
                                 onFailedLogin = {
+                                    Toast.makeText(this@MainActivity, "Login failed!", Toast.LENGTH_SHORT).show()
                                 },
-                                loginHandlers = loginHandlers
+                                loginHandlers = authManager.getAvailableLoginHandlers()
                             )
                         }
                         composable("register") {

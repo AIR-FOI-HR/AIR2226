@@ -1,14 +1,18 @@
 package hr.foi.air.giveaway.navigation.components.registration
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +28,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.foi.air.giveaway.ui.components.*
 import hr.foi.air.giveaway.viewmodels.RegistrationViewModel
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.text.style.TextAlign
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun RegistrationPage(
     viewModel: RegistrationViewModel = viewModel(),
@@ -42,81 +48,96 @@ fun RegistrationPage(
     }
     val errorMessage = viewModel.errorMessage.observeAsState().value ?: ""
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-    ) {
-        Text(
-            text = "Create an Account",
-            style = MaterialTheme.typography.h4,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
-
-        if (errorMessage != "") {
-            Text(
-                text = errorMessage,
-                color = Color.Red
-            )
-        }
-
-        StyledTextField(
-            label = "First name",
-            value = firstName,
-            onValueChange = {  viewModel.firstName.value = it  })
-
-        StyledTextField(
-            label = "Last name",
-            value = lastName,
-            onValueChange = {  viewModel.lastName.value = it  })
-
-        StyledTextField(
-            label = "Username",
-            value = username,
-            onValueChange = { viewModel.username.value = it })
-
-        StyledTextField(
-            label = "Email",
-            value = email,
-            onValueChange = { viewModel.email.value = it })
-
-        StyledTextField(
-            label = "Phone number",
-            value = number,
-            onValueChange = { viewModel.number.value = it })
-
-        PasswordTextField(
-            label = "Password",
-            value = password,
-            onValueChange = { viewModel.password.value = it })
-
-        PasswordTextField(
-            label = "Confirm password",
-            value = confirmPassword,
-            onValueChange = { viewModel.confirmPassword.value = it },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
-        )
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-        StyledButton(
-            label = "Register",
-            enabled = !isAwaitingResponse,
-            onClick = {
-                isAwaitingResponse = true
-
-                viewModel.registerUser(
-                    onSuccess = {
-                        isAwaitingResponse = false
-                        onSuccessfulRegistration(username)
-                    },
-                    onFail = {
-                        isAwaitingResponse = false
-                    }
+    Scaffold(
+        topBar = {
+            Surface(color = MaterialTheme.colors.primaryVariant, modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "GiveAway",
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier
+                        .padding(vertical = 24.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
                 )
             }
-        )
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            Text(
+                text = "Create an Account",
+                style = MaterialTheme.typography.h4,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+
+            if (errorMessage != "") {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red
+                )
+            }
+
+            StyledTextField(
+                label = "First name",
+                value = firstName,
+                onValueChange = {  viewModel.firstName.value = it  })
+
+            StyledTextField(
+                label = "Last name",
+                value = lastName,
+                onValueChange = {  viewModel.lastName.value = it  })
+
+            StyledTextField(
+                label = "Username",
+                value = username,
+                onValueChange = { viewModel.username.value = it })
+
+            StyledTextField(
+                label = "Email",
+                value = email,
+                onValueChange = { viewModel.email.value = it })
+
+            StyledTextField(
+                label = "Phone number",
+                value = number,
+                onValueChange = { viewModel.number.value = it })
+
+            PasswordTextField(
+                label = "Password",
+                value = password,
+                onValueChange = { viewModel.password.value = it })
+
+            PasswordTextField(
+                label = "Confirm password",
+                value = confirmPassword,
+                onValueChange = { viewModel.confirmPassword.value = it },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
+            )
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            StyledButton(
+                label = "Register",
+                enabled = !isAwaitingResponse,
+                onClick = {
+                    isAwaitingResponse = true
+
+                    viewModel.registerUser(
+                        onSuccess = {
+                            isAwaitingResponse = false
+                            onSuccessfulRegistration(username)
+                        },
+                        onFail = {
+                            isAwaitingResponse = false
+                        }
+                    )
+                }
+            )
+        }
     }
 }
 

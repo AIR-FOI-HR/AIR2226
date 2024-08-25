@@ -1,6 +1,5 @@
 package hr.foi.air.giveaway.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import hr.foi.air.core.login.LoginHandler
@@ -11,7 +10,6 @@ class LoginViewModel : ViewModel() {
     val identifier: MutableLiveData<String> = MutableLiveData("")
     val password: MutableLiveData<String> = MutableLiveData("")
     private val _errorMessage: MutableLiveData<String> = MutableLiveData("")
-    val errorMessage: LiveData<String> = _errorMessage
 
     fun login(
         loginHandler: LoginHandler,

@@ -1,6 +1,6 @@
 package hr.foi.air.core.login
 
 interface LoginOutcomeListener {
-    fun onSuccessfulLogin(username: String)
+    fun onSuccessfulLogin(identifier: String)
     fun onFailedLogin(reason: String)
 }
